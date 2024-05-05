@@ -7,4 +7,3 @@ Example usage
 cd itmine
 hercow . --replace itmine=feraljaws
 ```
-

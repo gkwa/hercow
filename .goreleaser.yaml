@@ -20,7 +20,7 @@ builds:
     -X "github.com/taylormonacelli/hercow/version.Date={{.CommitDate}}"
     -X "github.com/taylormonacelli/hercow/version.GoVersion={{.Env.GOVERSION}}"
     -X "github.com/taylormonacelli/hercow/version.ShortGitSHA={{.ShortCommit}}"
-    -X "github.com/taylormonacelli/hercow/version.FullGitSHA={{.FullCommit}}"  
+    -X "github.com/taylormonacelli/hercow/version.FullGitSHA={{.FullCommit}}"
   id: hercow
 archives:
 - format: tar.gz
