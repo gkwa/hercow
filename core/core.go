@@ -9,13 +9,13 @@ import (
 	"strings"
 )
 
-func walkDir(dir string, maxFiles int, oldString, newString string, count *int) error {
+func walkDir(dir string, maxFiles int, oldString, newString string, skipDirs []string, count *int) error {
 	return filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
 
-		if d.IsDir() && d.Name() == ".git" {
+		if d.IsDir() && containsIgnoreCase(skipDirs, d.Name()) {
 			return filepath.SkipDir
 		}
 
@@ -38,6 +38,15 @@ func walkDir(dir string, maxFiles int, oldString, newString string, count *int) 
 
 		return nil
 	})
+}
+
+func containsIgnoreCase(slice []string, item string) bool {
+	for _, s := range slice {
+		if s == item {
+			return true
+		}
+	}
+	return false
 }
 
 func processFile(path, oldString, newString string) error {
@@ -65,7 +74,7 @@ func renameFile(path, oldString, newString string) error {
 	return nil
 }
 
-func Main(dir string, maxFiles int, replace string) {
+func Main(dir string, maxFiles int, replace string, skipDirs []string) {
 	if replace == "" {
 		fmt.Println("Error: --replace parameter is required")
 		os.Exit(1)
@@ -84,7 +93,7 @@ func Main(dir string, maxFiles int, replace string) {
 	}
 
 	var count int
-	err := walkDir(dir, maxFiles, oldString, newString, &count)
+	err := walkDir(dir, maxFiles, oldString, newString, skipDirs, &count)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		os.Exit(1)

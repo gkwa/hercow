@@ -19,23 +19,22 @@ var (
 
 var rootCmd = &cobra.Command{
 	Use:   "hercow",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Recursively replace strings in files and filenames within a Git-controlled directory",
+	Long: `Hercow is a command-line tool that recursively searches for a specified string within a
+Git-controlled directory and replaces it with a new string in both file contents and filenames.
+It provides options to control the maximum number of files processed and enables logging for
+debugging purposes.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		maxFiles, _ := cmd.Flags().GetInt("maxfiles")
 		replace, _ := cmd.Flags().GetString("replace")
+		skipDirs, _ := cmd.Flags().GetStringSlice("skip-dirs")
 
 		if len(args) == 0 {
 			fmt.Println("Error: directory path is required")
 			os.Exit(1)
 		}
 
-		core.Main(args[0], maxFiles, replace)
+		core.Main(args[0], maxFiles, replace, skipDirs)
 	},
 }
 
@@ -75,6 +74,7 @@ func init() {
 
 	rootCmd.Flags().IntP("maxfiles", "m", 100, "maximum number of files allowed")
 	rootCmd.Flags().StringP("replace", "r", "", "string replacement in the format 'string1=string2'")
+	rootCmd.Flags().StringSliceP("skip-dirs", "s", []string{".git"}, "directories to skip")
 }
 
 func initConfig() {
