@@ -1,7 +1,0 @@
-* hercow
-
-This is a description of my hercow.
-
-** Usage
-
-To use my project, run this command: ./hercow --verbose
