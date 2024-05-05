@@ -29,6 +29,12 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		maxFiles, _ := cmd.Flags().GetInt("maxfiles")
 		replace, _ := cmd.Flags().GetString("replace")
+
+		if len(args) == 0 {
+			fmt.Println("Error: directory path is required")
+			os.Exit(1)
+		}
+
 		core.Main(args[0], maxFiles, replace)
 	},
 }

@@ -78,11 +78,6 @@ func Main(dir string, maxFiles int, replace string) {
 	}
 	oldString, newString := parts[0], parts[1]
 
-	if dir == "" {
-		fmt.Println("Error: directory path is required")
-		os.Exit(1)
-	}
-
 	if _, err := os.Stat(filepath.Join(dir, ".git")); errors.Is(err, os.ErrNotExist) {
 		fmt.Println("Error: directory is not under version control")
 		os.Exit(1)
