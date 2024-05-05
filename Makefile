@@ -1,3 +1,7 @@
+GOVERSION := $(shell go version)
+
+export GOVERSION
+
 ifeq ($(OS),Windows_NT)
     SOURCES := $(shell dir /S /B *.go)
 else
