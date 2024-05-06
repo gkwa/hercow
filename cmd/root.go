@@ -18,23 +18,20 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "hercow",
+	Use:   "hercow dirPath",
 	Short: "Recursively replace strings in files and filenames within a Git-controlled directory",
 	Long: `Hercow is a command-line tool that recursively searches for a specified string within a
 Git-controlled directory and replaces it with a new string in both file contents and filenames.
 It provides options to control the maximum number of files processed and enables logging for
 debugging purposes.`,
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		maxFiles, _ := cmd.Flags().GetInt("maxfiles")
-		replace, _ := cmd.Flags().GetString("replace")
-		skipDirs, _ := cmd.Flags().GetStringSlice("skip-dirs")
+		maxFiles := viper.GetInt("maxfiles")
+		replace := viper.GetString("replace")
+		skipDirs := viper.GetStringSlice("skip-dirs")
+		dirPath := args[0]
 
-		if len(args) == 0 {
-			fmt.Println("Error: directory path is required")
-			os.Exit(1)
-		}
-
-		core.Main(args[0], maxFiles, replace, skipDirs)
+		core.Main(dirPath, maxFiles, replace, skipDirs)
 	},
 }
 
@@ -73,8 +70,25 @@ func init() {
 	}
 
 	rootCmd.Flags().IntP("maxfiles", "m", 100, "maximum number of files allowed")
+	err = viper.BindPFlag("maxfiles", rootCmd.Flags().Lookup("maxfiles"))
+	if err != nil {
+		slog.Error("error binding maxfiles flag", "error", err)
+		os.Exit(1)
+	}
+
 	rootCmd.Flags().StringP("replace", "r", "", "string replacement in the format 'string1=string2'")
+	err = viper.BindPFlag("replace", rootCmd.Flags().Lookup("replace"))
+	if err != nil {
+		slog.Error("error binding replace flag", "error", err)
+		os.Exit(1)
+	}
+
 	rootCmd.Flags().StringSliceP("skip-dirs", "s", []string{".git"}, "directories to skip")
+	err = viper.BindPFlag("skip-dirs", rootCmd.Flags().Lookup("skip-dirs"))
+	if err != nil {
+		slog.Error("error binding skip-dirs flag", "error", err)
+		os.Exit(1)
+	}
 }
 
 func initConfig() {
