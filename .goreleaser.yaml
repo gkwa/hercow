@@ -13,6 +13,13 @@ builds:
   goarch:
   - amd64
   binary: hercow
+  ldflags:
+  - -s -w
+    -X "github.com/taylormonacelli/hercow/version.Version={{.Version}}"
+    -X "github.com/taylormonacelli/hercow/version.Date={{.CommitDate}}"
+    -X "github.com/taylormonacelli/hercow/version.GoVersion={{.Env.GOVERSION}}"
+    -X "github.com/taylormonacelli/hercow/version.ShortGitSHA={{.ShortCommit}}"
+    -X "github.com/taylormonacelli/hercow/version.FullGitSHA={{.FullCommit}}"
   id: hercow
 archives:
 - format: tar.gz

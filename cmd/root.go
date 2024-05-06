@@ -24,6 +24,7 @@ var rootCmd = &cobra.Command{
 Git-controlled directory and replaces it with a new string in both file contents and filenames.
 It provides options to control the maximum number of files processed and enables logging for
 debugging purposes.`,
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		maxFiles, _ := cmd.Flags().GetInt("maxfiles")
 		replace, _ := cmd.Flags().GetString("replace")
