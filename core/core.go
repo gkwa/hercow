@@ -19,6 +19,17 @@ func walkDir(dir string, maxFiles int, oldString, newString string, skipDirs []s
 			return filepath.SkipDir
 		}
 
+		if d.IsDir() {
+			if strings.Contains(d.Name(), oldString) {
+				newPath := filepath.Join(filepath.Dir(path), strings.ReplaceAll(d.Name(), oldString, newString))
+				if err := renameDir(path, newPath); err != nil {
+					return err
+				}
+				return filepath.SkipDir
+			}
+			return nil
+		}
+
 		if !d.IsDir() {
 			*count++
 			if *count > maxFiles {
@@ -30,7 +41,8 @@ func walkDir(dir string, maxFiles int, oldString, newString string, skipDirs []s
 			}
 
 			if strings.Contains(d.Name(), oldString) {
-				if err := renameFile(path, oldString, newString); err != nil {
+				newPath := filepath.Join(filepath.Dir(path), strings.ReplaceAll(d.Name(), oldString, newString))
+				if err := renameFile(path, newPath); err != nil {
 					return err
 				}
 			}
@@ -65,10 +77,15 @@ func processFile(path, oldString, newString string) error {
 	return nil
 }
 
-func renameFile(path, oldString, newString string) error {
-	newName := strings.ReplaceAll(filepath.Base(path), oldString, newString)
-	newPath := filepath.Join(filepath.Dir(path), newName)
-	if err := os.Rename(path, newPath); err != nil {
+func renameFile(oldPath, newPath string) error {
+	if err := os.Rename(oldPath, newPath); err != nil {
+		return err
+	}
+	return nil
+}
+
+func renameDir(oldPath, newPath string) error {
+	if err := os.Rename(oldPath, newPath); err != nil {
 		return err
 	}
 	return nil
