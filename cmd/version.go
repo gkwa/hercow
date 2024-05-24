@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/gkwa/hercow/version"
 	"github.com/spf13/cobra"
-	"github.com/taylormonacelli/hercow/version"
 )
 
 // versionCmd represents the version command

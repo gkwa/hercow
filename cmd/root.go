@@ -5,10 +5,10 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/gkwa/hercow/core"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/taylormonacelli/goldbug"
-	"github.com/taylormonacelli/hercow/core"
 )
 
 var (

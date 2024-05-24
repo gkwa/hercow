@@ -13,14 +13,14 @@ builds:
   goarch:
   - amd64
   binary: hercow
+  id: hercow
   ldflags:
   - -s -w
-    -X "github.com/taylormonacelli/hercow/version.Version={{.Version}}"
-    -X "github.com/taylormonacelli/hercow/version.Date={{.CommitDate}}"
-    -X "github.com/taylormonacelli/hercow/version.GoVersion={{.Env.GOVERSION}}"
-    -X "github.com/taylormonacelli/hercow/version.ShortGitSHA={{.ShortCommit}}"
-    -X "github.com/taylormonacelli/hercow/version.FullGitSHA={{.FullCommit}}"
-  id: hercow
+    -X "github.com/gkwa/hercow/version.Version={{ .Version }}"
+    -X "github.com/gkwa/hercow/version.Date={{ .CommitDate }}"
+    -X "github.com/gkwa/hercow/version.GoVersion={{ .Env.GOVERSION }}"
+    -X "github.com/gkwa/hercow/version.ShortGitSHA={{ .ShortCommit }}"
+    -X "github.com/gkwa/hercow/version.FullGitSHA={{ .FullCommit }}"
 archives:
 - format: tar.gz
   name_template: |-
@@ -46,8 +46,17 @@ changelog:
 brews:
 - name: hercow
   directory: Formula
-  homepage: https://github.com/taylormonacelli/homebrew-tools
+  homepage: https://github.com/gkwa/hercow
   repository:
-    owner: taylormonacelli
+    owner: gkwa
     name: homebrew-tools
     branch: main
+scoops:
+- name: hercow
+  homepage: https://github.com/gkwa/hercow
+  description: "Description of the hercow project"
+  license: MIT
+  repository:
+    owner: gkwa
+    name: scoop-bucket
+    branch: master
